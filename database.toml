@@ -1,0 +1,11 @@
+[schema]
+branch = "main"
+cache_schema_id = ""
+lang = "Rust"
+orm = "Diesel"
+root = "src/models"
+schema_id = ""
+url = ""
+
+[tables]
+names = []

@@ -1,0 +1,22 @@
+version: '3'
+services:
+    estonia-redis:
+        image: redis:7-alpine
+        restart: always
+        command: ["redis-server", "--save", "", "--appendonly", "no"]
+        healthcheck:
+            test: ["CMD", "redis-cli", "ping"]
+            interval: 1s
+            timeout: 3s
+            retries: 50
+        ports:
+            - 6380:6379
+
+    changi-messagequeue:
+        image: rabbitmq:3-management
+        ports:
+            - 5672:5672
+            - 15672:15672
+        environment:
+            RABBITMQ_DEFAULT_USER: user
+            RABBITMQ_DEFAULT_PASS: password

@@ -1,0 +1,20 @@
+lang = "Rust"
+package_type = "executable"
+
+[[links]]
+icon = "FaCodeBranch"
+internal = true
+label = "Pull Requests"
+link = "https://github.com/ginger-society/template-backend-rust/pulls"
+
+[[links]]
+icon = "FaRegPlayCircle"
+internal = true
+label = "Pipelines"
+link = "https://github.com/ginger-society/template-backend-rust/actions"
+
+[[links]]
+icon = "FaGithub"
+internal = true
+label = "Browse Repo"
+link = "https://github.com/ginger-society/template-backend-rust"

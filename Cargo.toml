@@ -1,0 +1,43 @@
+[package]
+description = "A service to track presence , allows registration of capabilities"
+edition = "2021"
+license = "MIT"
+name = "GingerBucket"
+readme = "README.md"
+repository = "https://github.com/ginger-society/GingerBucket"
+version = "0.5.0-nightly.0"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+IAMService = {path = "./IAMService_client"}
+anyhow = "1.0.98"
+bcrypt = "0.15.1"
+chrono = {version = "0.4", features = ["serde"]}
+diesel = {version = "2.1.5", features = ["postgres", "r2d2", "chrono", "serde_json"]}
+dotenv = "0.15.0"
+futures = "0.3"
+ginger-shared-rs = "0.34.0-nightly.0"
+jsonwebtoken = "9.3.0"
+mongodb = "2.1.0"
+okapi = {version = "0.7.0"}
+rand = "0.8.5"
+rocket = {version = "0.5.0-rc.2", default-features = false, features = [
+  "json",
+]}
+rocket_okapi = {version = "0.8.0-rc.2", features = ["swagger", "secrets"]}
+rocket_prometheus = "0.10.0"
+schemars = {version = "0.8", features = ["chrono"]}
+serde = {version = "1.0", features = ["derive"]}
+serde_json = "1.0"
+serde_with = "3.7.0"
+uuid = "1.16.0"
+tokio = {version = "1", features = ["full"]}
+tokio-tungstenite = { version = "0.26.2", features = ["tokio-native-tls", "native-tls"] }
+futures-util = "0.3.31"
+redis = { version = "0.25", features = ["tokio-comp", "connection-manager"] }
+lapin = "2.5.0"
+base64 = "0.22.1"
+
+[package.metadata]
+organization = "ginger-society"
