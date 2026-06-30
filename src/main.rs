@@ -19,6 +19,7 @@ mod handlers;
 mod middlewares;
 mod models;
 mod routes;
+mod upload_consumer;
 mod upload_expiry_watcher;
 mod upload_rabbit;
 mod upload_routes;
@@ -73,14 +74,18 @@ async fn main() {
             println!("Attempting to connect to redis");
             let redis_pool = create_redis_pool(redis_uri.clone()).await;
 
-            // Upload-session expiry watcher needs its own Redis connection
-            // (pubsub, not pooled command traffic) — same pattern as the
-            // other keyspace-notification watchers in this codebase.
             upload_expiry_watcher::start_upload_expiry_watcher(redis_uri.clone(), 0);
+
+            // S3-mirror consumer needs Redis for retry-attempt tracking —
+            // clone the pool before handing the original to Rocket state.
+            upload_consumer::start_upload_s3_mirror_consumer(redis_pool.clone());
 
             server = server.manage(redis_pool);
         }
-        Err(_) => println!("Not connecting to redis"),
+        Err(_) => {
+            println!("Not connecting to redis");
+            eprintln!("[upload-s3-mirror] WARNING: REDIS_URI not set — S3 mirror consumer not started (it requires Redis for retry tracking)");
+        }
     }
 
     // RabbitMQ publish pool for upload-complete notifications. Connects
@@ -89,6 +94,13 @@ async fn main() {
     println!("Connecting to RabbitMQ for upload notifications...");
     let upload_rabbit_pool = Arc::new(UploadRabbitPool::new().await);
     server = server.manage(upload_rabbit_pool);
+
+    // Background task: consumes upload-complete events from the same
+    // RabbitMQ exchange and mirrors finished files to S3. Runs in-process
+    // alongside the Rocket server rather than as a separate binary/pod —
+    // it has its own RabbitMQ connection (consume side) independent of the
+    // publish-side pool managed above. Fire-and-forget: it reconnects
+    // forever internally and never returns control to main().
 
     server.launch().await.expect("Failed to launch Rocket");
 }

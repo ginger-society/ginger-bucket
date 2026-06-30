@@ -319,6 +319,7 @@ pub async fn create_upload(
     let message_body = serde_json::json!({
         "event": "upload_complete",
         "bucket_path": info.relative_path,
+        "absolute_path": absolute_path.to_string_lossy(),
         "total_bytes": total_bytes,
         "total_parts": next_part,
     })
