@@ -14,3 +14,7 @@ port = 8080
 read_timeout = 5
 secret_key = "wsN27BdC/l2OgjxwDmaxOGzSosNt/r1SiZViX0dUX4c="
 write_timeout = 5
+
+
+[global]
+limits = { bytes = "10MB", data-form = "10MB", file = "10MB", form = "10MB" }

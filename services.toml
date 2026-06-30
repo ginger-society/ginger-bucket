@@ -19,10 +19,10 @@ stage = ""
 stage_k8 = ""
 
 [urls]
-prod = "http://localhost:8089/api"
+prod = "https://bucket.gingersociety.org/api"
 stage_k8 = "http://ginger-bucket-service/api"
-stage = "http://localhost:8089/api"
-prod_k8 = "http://localhost:8089/api"
-dev = "http://localhost:8089/api"
+stage = "https://bucket.gingersociety.org/api"
+prod_k8 = "https://bucket.gingersociety.org/api"
+dev = "https://bucket.gingersociety.org/api"
 
 [urls_ws]
