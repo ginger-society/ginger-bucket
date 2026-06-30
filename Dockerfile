@@ -24,6 +24,9 @@ RUN curl -LO "https://dl.k8s.io/release/$(curl -sL https://dl.k8s.io/release/sta
 
 # Copy the compiled binary from the builder stage
 COPY --from=builder /app/target/release/GingerBucket /app/
+COPY --from=builder /app/Rocket.toml /app/
+
+ENV ROCKET_PROFILE=release
 
 # Set the working directory
 WORKDIR /app
